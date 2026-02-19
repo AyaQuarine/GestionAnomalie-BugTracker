@@ -1,0 +1,42 @@
+@model GestionAnomalies.Entities.Projet
+@{
+    ViewData["Title"] = "Détails projet";
+}
+
+<div class="app-content-header">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-sm-6"><h3 class="mb-0">@Model.Nom</h3></div>
+            <div class="col-sm-6 text-end">
+                <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Retour</a>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary"><i class="bi bi-pencil"></i> Modifier</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="app-content">
+    <div class="container-fluid">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card card-outline card-primary">
+                    <div class="card-body">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4">Nom</dt>
+                            <dd class="col-sm-8">@Model.Nom</dd>
+                            <dt class="col-sm-4">Description</dt>
+                            <dd class="col-sm-8">@Model.Description</dd>
+                            <dt class="col-sm-4">Responsable</dt>
+                            <dd class="col-sm-8">@Model.Responsable?.Nom</dd>
+                            <dt class="col-sm-4">Créé le</dt>
+                            <dd class="col-sm-8">@Model.DateCreation.ToString("dd/MM/yyyy")</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="alert alert-info mb-0">Liste des anomalies du projet à afficher ici si exposées par le contrôleur.</div>
+            </div>
+        </div>
+    </div>
+</div>

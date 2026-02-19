@@ -1,0 +1,365 @@
+﻿@model DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+   <main class="app-main">
+        <!--begin::App Content Header-->
+        <div class="app-content-header">
+          <!--begin::Container-->
+          <div class="container-fluid">
+            <!--begin::Row-->
+            <div class="row">
+              <div class="col-sm-6"><h3 class="mb-0">Dashboard - Gestion des Anomalies</h3></div>
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-end">
+                  <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                </ol>
+              </div>
+            </div>
+            <!--end::Row-->
+          </div>
+          <!--end::Container-->
+        </div>
+        <!--end::App Content Header-->
+        <!--begin::App Content-->
+        <div class="app-content">
+          <!--begin::Container-->
+          <div class="container-fluid">
+            <!--begin::Row-->
+            <div class="row">
+              <!--begin::Col - Total Anomalies-->
+              <div class="col-lg-3 col-6">
+                <div class="small-box text-bg-primary">
+                  <div class="inner">
+                    <h3>@Model.TotalAnomalies</h3>
+                    <p>Total Anomalies</p>
+                  </div>
+                  <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z"></path>
+                  </svg>
+                  <a href="@Url.Action("Index", "Anomalie")" class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover">
+                    Plus d'infos <i class="bi bi-link-45deg"></i>
+                  </a>
+                </div>
+              </div>
+              <!--end::Col-->
+              
+              <!--begin::Col - Temps moyen résolution-->
+              <div class="col-lg-3 col-6">
+                <div class="small-box text-bg-success">
+                  <div class="inner">
+                    <h3>@Model.TempsMoyenResolution</h3>
+                    <p>Jours (Temps Moyen)</p>
+                  </div>
+                  <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd"></path>
+                  </svg>
+                  <a href="#" class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover">
+                    Temps moyen de résolution <i class="bi bi-link-45deg"></i>
+                  </a>
+                </div>
+              </div>
+              <!--end::Col-->
+              
+              <!--begin::Col - Par Statut-->
+              <div class="col-lg-3 col-6">
+                <div class="small-box text-bg-warning">
+                  <div class="inner">
+                    <h3>@Model.AnomaliesParStatut.Count</h3>
+                    <p>Statuts Différents</p>
+                  </div>
+                  <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M18.375 2.25c-1.035 0-1.875.84-1.875 1.875v15.75c0 1.035.84 1.875 1.875 1.875h.75c1.035 0 1.875-.84 1.875-1.875V4.125c0-1.036-.84-1.875-1.875-1.875h-.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-.75a1.875 1.875 0 01-1.875-1.875V8.625zM3 13.125c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v6.75c0 1.035-.84 1.875-1.875 1.875h-.75A1.875 1.875 0 013 19.875v-6.75z"></path>
+                  </svg>
+                  <a href="#" class="small-box-footer link-dark link-underline-opacity-0 link-underline-opacity-50-hover">
+                    Voir statistiques <i class="bi bi-link-45deg"></i>
+                  </a>
+                </div>
+              </div>
+              <!--end::Col-->
+              
+              <!--begin::Col - Par Technicien-->
+              <div class="col-lg-3 col-6">
+                <div class="small-box text-bg-danger">
+                  <div class="inner">
+                    <h3>@Model.AnomaliesParTechnicien.Count</h3>
+                    <p>Techniciens Actifs</p>
+                  </div>
+                  <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M6.25 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM3.25 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM19.75 7.5a.75.75 0 00-1.5 0v2.25H16a.75.75 0 000 1.5h2.25v2.25a.75.75 0 001.5 0v-2.25H22a.75.75 0 000-1.5h-2.25V7.5z"></path>
+                  </svg>
+                  <a href="@Url.Action("Index", "User")" class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover">
+                    Voir techniciens <i class="bi bi-link-45deg"></i>
+                  </a>
+                </div>
+              </div>
+              <!--end::Col-->
+            </div>
+            <!--end::Row-->
+            
+            <!--begin::Row - Graphiques statistiques-->
+            <div class="row mt-4">
+              <!-- Anomalies par Statut -->
+              <div class="col-lg-6">
+                <div class="card mb-4">
+                  <div class="card-header">
+                    <h3 class="card-title">
+                      <i class="bi bi-clipboard-check me-2"></i>
+                      Anomalies par Statut
+                    </h3>
+                  </div>
+                  <div class="card-body">
+                    @if (Model.AnomaliesParStatut.Any())
+                    {
+                      <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                          <thead>
+                            <tr>
+                              <th>Statut</th>
+                              <th class="text-end">Nombre</th>
+                              <th class="text-end">Pourcentage</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach (var item in Model.AnomaliesParStatut.OrderByDescending(x => x.Value))
+                            {
+                              var percentage = Model.TotalAnomalies > 0 ? (item.Value * 100.0 / Model.TotalAnomalies) : 0;
+                              <tr>
+                                <td>
+                                  <span class="badge bg-primary">@item.Key</span>
+                                </td>
+                                <td class="text-end"><strong>@item.Value</strong></td>
+                                <td class="text-end">@percentage.ToString("F1")%</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    }
+                    else
+                    {
+                      <p class="text-muted">Aucune donnée disponible</p>
+                    }
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Anomalies par Priorité -->
+              <div class="col-lg-6">
+                <div class="card mb-4">
+                  <div class="card-header">
+                    <h3 class="card-title">
+                      <i class="bi bi-exclamation-triangle me-2"></i>
+                      Anomalies par Priorité
+                    </h3>
+                  </div>
+                  <div class="card-body">
+                    @if (Model.AnomaliesParPriorite.Any())
+                    {
+                      <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                          <thead>
+                            <tr>
+                              <th>Priorité</th>
+                              <th class="text-end">Nombre</th>
+                              <th class="text-end">Pourcentage</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach (var item in Model.AnomaliesParPriorite.OrderByDescending(x => x.Value))
+                            {
+                              var percentage = Model.TotalAnomalies > 0 ? (item.Value * 100.0 / Model.TotalAnomalies) : 0;
+                              var badgeClass = item.Key switch
+                              {
+                                "Critique" => "bg-danger",
+                                "Haute" => "bg-warning",
+                                "Moyenne" => "bg-info",
+                                "Basse" => "bg-success",
+                                _ => "bg-secondary"
+                              };
+                              <tr>
+                                <td>
+                                  <span class="badge @badgeClass">@item.Key</span>
+                                </td>
+                                <td class="text-end"><strong>@item.Value</strong></td>
+                                <td class="text-end">@percentage.ToString("F1")%</td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    }
+                    else
+                    {
+                      <p class="text-muted">Aucune donnée disponible</p>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--end::Row-->
+            
+            <!--begin::Row - Anomalies par Technicien-->
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="card mb-4">
+                  <div class="card-header">
+                    <h3 class="card-title">
+                      <i class="bi bi-people me-2"></i>
+                      Anomalies par Technicien
+                    </h3>
+                  </div>
+                  <div class="card-body">
+                    @if (Model.AnomaliesParTechnicien.Any())
+                    {
+                      <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                          <thead>
+                            <tr>
+                              <th>Technicien</th>
+                              <th class="text-end">Nombre d'anomalies</th>
+                              <th class="text-end">Charge (%)</th>
+                              <th class="text-end">Visualisation</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach (var item in Model.AnomaliesParTechnicien.OrderByDescending(x => x.Value))
+                            {
+                              var percentage = Model.TotalAnomalies > 0 ? (item.Value * 100.0 / Model.TotalAnomalies) : 0;
+                              var progressClass = item.Key == "Non assignées" ? "bg-danger" : "bg-primary";
+                              <tr>
+                                <td>
+                                  @if (item.Key == "Non assignées")
+                                  {
+                                    <span class="badge bg-danger">@item.Key</span>
+                                  }
+                                  else
+                                  {
+                                    <i class="bi bi-person-circle me-2"></i>@item.Key
+                                  }
+                                </td>
+                                <td class="text-end"><strong>@item.Value</strong></td>
+                                <td class="text-end">@percentage.ToString("F1")%</td>
+                                <td class="text-end">
+                                  <div class="progress" style="width: 100px; height: 20px;">
+                                    <div class="progress-bar @progressClass" role="progressbar" 
+                                         style="width: @percentage.ToString("F1")%" 
+                                         aria-valuenow="@percentage" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    }
+                    else
+                    {
+                      <p class="text-muted">Aucune donnée disponible</p>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--end::Row-->
+            
+            <!--begin::Row - Anomalies Récentes-->
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="card mb-4">
+                  <div class="card-header">
+                    <h3 class="card-title">
+                      <i class="bi bi-clock-history me-2"></i>
+                      Anomalies Récentes
+                    </h3>
+                    <div class="card-tools">
+                      <a href="@Url.Action("Index", "Anomalie")" class="btn btn-sm btn-primary">
+                        <i class="bi bi-list"></i> Voir toutes
+                      </a>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    @if (Model.AnomaliesRecentes.Any())
+                    {
+                      <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                          <thead>
+                            <tr>
+                              <th>Titre</th>
+                              <th>Projet</th>
+                              <th>Statut</th>
+                              <th>Priorité</th>
+                              <th>Technicien</th>
+                              <th>Date</th>
+                              <th>Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @foreach (var anomalie in Model.AnomaliesRecentes)
+                            {
+                              <tr>
+                                <td>
+                                  <strong>@anomalie.Titre</strong>
+                                </td>
+                                <td>@anomalie.Projet?.Nom</td>
+                                <td>
+                                  <span class="badge bg-info">@anomalie.Statut?.Libelle</span>
+                                </td>
+                                <td>
+                                  @{
+                                    var prioriteBadge = anomalie.Priorite?.Libelle switch
+                                    {
+                                      "Critique" => "bg-danger",
+                                      "Haute" => "bg-warning",
+                                      "Moyenne" => "bg-info",
+                                      "Basse" => "bg-success",
+                                      _ => "bg-secondary"
+                                    };
+                                  }
+                                  <span class="badge @prioriteBadge">@anomalie.Priorite?.Libelle</span>
+                                </td>
+                                <td>
+                                  @if (anomalie.Assignee != null)
+                                  {
+                                    <span>@anomalie.Assignee.Nom @anomalie.Assignee.Prenom</span>
+                                  }
+                                  else
+                                  {
+                                    <span class="badge bg-danger">Non assignée</span>
+                                  }
+                                </td>
+                                <td>
+                                  <small class="text-muted">@anomalie.DateCreation.ToString("dd/MM/yyyy")</small>
+                                </td>
+                                <td>
+                                  <a href="@Url.Action("Details", "Anomalie", new { id = anomalie.Id })" 
+                                     class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-eye"></i>
+                                  </a>
+                                </td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    }
+                    else
+                    {
+                      <div class="alert alert-info">
+                        <i class="bi bi-info-circle me-2"></i>
+                        Aucune anomalie récente à afficher.
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--end::Row-->
+          </div>
+          <!--end::Container-->
+        </div>
+        <!--end::App Content-->
+      </main>

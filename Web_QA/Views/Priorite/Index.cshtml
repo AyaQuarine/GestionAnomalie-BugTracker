@@ -1,0 +1,71 @@
+@model IEnumerable<GestionAnomalies.Entities.Priorite>
+
+@{
+    ViewData["Title"] = "Gestion des Priorités";
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">@ViewData["Title"]</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <a asp-action="Create" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Nouvelle priorité
+                </a>
+            </div>
+            <div class="card-body">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show">
+                        @TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Libellé</th>
+                            <th>Niveau</th>
+                            <th>Couleur</th>
+                            <th>Date de création</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var priorite in Model)
+                        {
+                            <tr>
+                                <td>@priorite.Libelle</td>
+                                <td>@priorite.Niveau</td>
+                                <td>
+                                    <span class="badge" style="background-color: @priorite.CodeCouleur">@priorite.CodeCouleur</span>
+                                </td>
+                                <td>@priorite.DateCreation.ToString("dd/MM/yyyy")</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@priorite.Id" class="btn btn-sm btn-warning">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form asp-action="Delete" asp-route-id="@priorite.Id" method="post" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette priorité ?');">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

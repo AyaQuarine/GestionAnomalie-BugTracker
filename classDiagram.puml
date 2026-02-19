@@ -1,0 +1,111 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+skinparam classBackgroundColor White
+skinparam classBorderColor Black
+
+' --- 1. BASE CLASS (Abstraction & Héritage) ---
+abstract class BaseEntity {
+    + Id : int
+    + DateCreation : DateTime
+    + DateModification : DateTime
+}
+
+' --- 2. ENUMERATIONS ---
+enum RoleUser {
+    ADMINISTRATEUR
+    RESPONSABLE
+    TECHNICIEN
+    UTILISATEUR
+}
+
+' --- 3. ENTITÉS PRINCIPALES ---
+
+class User {
+    + Nom : string
+    + Prenom : string
+    + Email : string
+    + MotDePasseHash : string
+    + Role : RoleUser
+    --
+    + DeclarerAnomalie()
+    + ConsulterHistorique()
+}
+
+class Projet {
+    + Nom : string
+    + Description : string
+    + DateDebut : DateTime
+    + DateFin : DateTime
+}
+
+class Anomalie {
+    + Titre : string
+    + Description : string
+    + DateCloture : DateTime?
+    --
+    + ChangerStatut(nouveauStatut : Statut)
+    + AssignerTechnicien(tech : User)
+}
+
+' --- 4. ENTITÉS DE RÉFÉRENTIEL (Gérées par Admin) ---
+class TypeAnomalie {
+    + Libelle : string
+    + Description : string
+}
+
+class Priorite {
+    + Libelle : string (ex: Critique, Majeure)
+    + CodeCouleur : string
+    + Niveau : int
+}
+
+class Statut {
+    + Libelle : string (ex: Nouvelle, En cours)
+    + EstFinal : bool
+}
+
+' --- 5. ENTITÉS SECONDAIRES ---
+class Commentaire {
+    + Message : string
+}
+
+class PieceJointe {
+    + NomFichier : string
+    + CheminFichier : string
+    + Taille : long
+}
+
+' --- 6. RELATIONS (Héritage) ---
+BaseEntity <|-- User
+BaseEntity <|-- Projet
+BaseEntity <|-- Anomalie
+BaseEntity <|-- TypeAnomalie
+BaseEntity <|-- Priorite
+BaseEntity <|-- Statut
+BaseEntity <|-- Commentaire
+BaseEntity <|-- PieceJointe
+
+' --- 7. RELATIONS (Associations) ---
+
+' Un User (Admin) gère les Projets, mais ce n'est pas une FK directe obligatoire.
+' Par contre, un Projet contient des Anomalies
+Projet "1" -- "*" Anomalie : Contient >
+
+' RELATIONS CRITIQUES USER-ANOMALIE
+User "1" -- "*" Anomalie : "A déclaré (CreateurId)" >
+User "0..1" -- "*" Anomalie : "Est assigné à (AssigneeId)" >
+
+' Caractérisation de l'anomalie
+Anomalie "*" -- "1" TypeAnomalie : Est de type >
+Anomalie "*" -- "1" Priorite : A une priorité >
+Anomalie "*" -- "1" Statut : Est dans l'état >
+
+' Détails de l'anomalie
+Anomalie "1" *-- "*" Commentaire : Possède >
+Anomalie "1" *-- "*" PieceJointe : Possède >
+
+' Auteurs des commentaires
+User "1" -- "*" Commentaire : A écrit >
+
+@enduml

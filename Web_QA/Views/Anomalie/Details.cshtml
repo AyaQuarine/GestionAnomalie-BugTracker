@@ -1,0 +1,183 @@
+@using GestionAnomalies.Entities
+@model GestionAnomalies.Entities.Anomalie
+@{
+    ViewData["Title"] = "Détails";
+    var commentaires = ViewBag.Commentaires as IEnumerable<Commentaire> ?? Enumerable.Empty<Commentaire>();
+    var pieces = ViewBag.PiecesJointes as IEnumerable<PieceJointe> ?? Enumerable.Empty<PieceJointe>();
+    var userId = (int?)ViewBag.UserId;
+    var userRole = ViewBag.UserRole as string ?? string.Empty;
+}
+
+<div class="app-content-header">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-sm-6"><h3 class="mb-0">@Model.Titre</h3></div>
+            <div class="col-sm-6 text-end">
+                <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Retour</a>
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary"><i class="bi bi-pencil"></i> Modifier</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="app-content">
+    <div class="container-fluid">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card card-outline card-primary mb-4">
+                    <div class="card-body">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4">Projet</dt>
+                            <dd class="col-sm-8">@Model.Projet?.Nom</dd>
+                            <dt class="col-sm-4">Statut</dt>
+                            <dd class="col-sm-8"><span class="badge text-bg-info">@Model.Statut?.Libelle</span></dd>
+                            <dt class="col-sm-4">Priorité</dt>
+                            <dd class="col-sm-8"><span class="badge text-bg-secondary">@Model.Priorite?.Libelle</span></dd>
+                            <dt class="col-sm-4">Type</dt>
+                            <dd class="col-sm-8">@Model.TypeAnomalie?.Libelle</dd>
+                            <dt class="col-sm-4">Technicien</dt>
+                            <dd class="col-sm-8">
+                                @if (Model.Assignee != null)
+                                {
+                                    <span>@Model.Assignee.Prenom @Model.Assignee.Nom</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Non assigné</span>
+                                }
+                            </dd>
+                            <dt class="col-sm-4">Créée le</dt>
+                            <dd class="col-sm-8">@Model.DateCreation.ToString("dd/MM/yyyy")</dd>
+                        </dl>
+                        <hr />
+                        <h6>Description</h6>
+                        <p class="mb-0">@Model.Description</p>
+                    </div>
+                </div>
+
+                <div class="card card-outline card-success mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Commentaires</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (commentaires.Any())
+                        {
+                            <ul class="list-group list-group-flush">
+                                @foreach (var c in commentaires)
+                                {
+                                    <li class="list-group-item">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <strong>@c.Auteur?.Nom</strong>
+                                                <span class="text-muted ms-2">@c.DateCreation.ToString("dd/MM/yyyy HH:mm")</span>
+                                                <div>@c.Message</div>
+                                            </div>
+                                            @if (userId.HasValue && c.AuteurId == userId)
+                                            {
+                                                <form asp-controller="Commentaire" asp-action="Delete" method="post" class="ms-2">
+                                                    <input type="hidden" name="id" value="@c.Id" />
+                                                    <input type="hidden" name="anomalieId" value="@Model.Id" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Supprimer ce commentaire ?');"><i class="bi bi-trash"></i></button>
+                                                </form>
+                                            }
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p class="text-muted mb-0">Aucun commentaire.</p>
+                        }
+                    </div>
+                    <div class="card-footer">
+                        <form asp-controller="Commentaire" asp-action="Add" method="post">
+                            <input type="hidden" name="anomalieId" value="@Model.Id" />
+                            <div class="mb-3">
+                                <label class="form-label">Nouveau commentaire</label>
+                                <textarea name="contenu" class="form-control" rows="3" required></textarea>
+                            </div>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-success"><i class="bi bi-send"></i> Ajouter</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card card-outline card-secondary mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Pièces jointes</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (pieces.Any())
+                        {
+                            <ul class="list-group list-group-flush">
+                                @foreach (var p in pieces)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <i class="bi bi-paperclip me-2"></i>@p.NomFichier
+                                        </div>
+                                        <div class="btn-group btn-group-sm">
+                                            <a asp-controller="PieceJointe" asp-action="Download" asp-route-id="@p.Id" class="btn btn-outline-primary"><i class="bi bi-download"></i></a>
+                                            <form asp-controller="PieceJointe" asp-action="Delete" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@p.Id" />
+                                                <input type="hidden" name="anomalieId" value="@Model.Id" />
+                                                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Supprimer ce fichier ?');"><i class="bi bi-trash"></i></button>
+                                            </form>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <p class="text-muted mb-0">Aucune pièce jointe.</p>
+                        }
+                    </div>
+                    <div class="card-footer">
+                        <form asp-controller="PieceJointe" asp-action="Upload" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="anomalieId" value="@Model.Id" />
+                            <div class="mb-3">
+                                <label class="form-label">Ajouter un fichier</label>
+                                <input type="file" name="file" class="form-control" />
+                            </div>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-secondary"><i class="bi bi-upload"></i> Joindre</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card card-outline card-info mb-4">
+                    <div class="card-header"><h5 class="card-title mb-0">Actions</h5></div>
+                    <div class="card-body">
+                        <form asp-action="AssignTechnician" method="post" class="mb-3">
+                            <input type="hidden" name="anomalieId" value="@Model.Id" />
+                            <div class="mb-2">
+                                <label class="form-label">Assigner un technicien</label>
+                                <select name="technicienId" asp-items="ViewBag.Techniciens" class="form-select">
+                                    <option value="">-- Sélectionner un technicien --</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-outline-info w-100"><i class="bi bi-person-check"></i> Assigner</button>
+                        </form>
+
+                        <form asp-action="ChangeStatus" method="post">
+                            <input type="hidden" name="anomalieId" value="@Model.Id" />
+                            <div class="mb-2">
+                                <label class="form-label">Changer le statut</label>
+                                <select name="nouveauStatutId" asp-items="ViewBag.Statuts" class="form-select">
+                                    <option value="">-- Sélectionner un statut --</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-outline-primary w-100"><i class="bi bi-arrow-repeat"></i> Mettre à jour</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
